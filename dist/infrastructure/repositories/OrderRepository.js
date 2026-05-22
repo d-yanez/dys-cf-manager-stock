@@ -1,0 +1,23 @@
+"use strict";
+// src/infrastructure/repositories/OrderRepository.ts
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.OrderRepository = void 0;
+class OrderRepository {
+    save(order) {
+        return __awaiter(this, void 0, void 0, function* () {
+            // Implementa la lógica para guardar la orden, por ejemplo, en una base de datos
+            console.log('Orden guardada:', order);
+            // Aquí podrías usar Firestore, Firestore, etc.
+        });
+    }
+}
+exports.OrderRepository = OrderRepository;

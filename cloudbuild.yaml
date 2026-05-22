@@ -1,0 +1,21 @@
+steps:
+  - name: 'node:18'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        npm install
+        npm run build
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gcloud functions deploy orderProcessing \
+          --runtime nodejs18 \
+          --trigger-http \
+          --allow-unauthenticated \
+          --entry-point orderProcessing \
+          --source ./dist \
+          --region us-central1
+images: []

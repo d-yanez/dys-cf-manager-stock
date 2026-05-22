@@ -1,46 +1,23 @@
-import { Request, Response } from 'express';
-//import axios from 'axios';
+// src/index.ts
 
-// Función que manejará la Cloud Function
-export const orderProcessing = async (req: Request, res: Response) => {
-    console.log("orderProcessing init...")
-    if (req.method !== 'POST') {
-        return res.status(405).send('Método no permitido');
-    }
+import express, { Request, Response } from 'express';
+import { OrderController } from './interfaces/http/OrderController';
+//import { config } from '../config';
 
-    // Responder inmediatamente al evento
-    
-    console.log("response 200")
-    res.status(200).send('OK');
-    // Procesar el evento en background
-    setImmediate(async () => {
-        try {
-            console.log("setImmediate init...")
-            const order = req.body;
-            console.log(order)
-            /*const token = await getMercadoLibreToken();
+const app = express();
+const port = process.env.PORT || 8081;
 
-            // Recorrer cada item de la orden de compra
-            for (const item of order.items) {
-                const sku = item.sku;
-                const stock = await checkStockInMercadoLibre(sku, token);
+app.use(express.json());
 
-                // Si no hay stock, enviar mensaje a Meta
-                if (stock === 0) {
-                    await sendMessageToMeta(`No hay stock para el SKU: ${sku}`);
-                }
+const orderController = new OrderController();
 
-                // Verificar si es SKU de fulfillment
-                if (item.fulfillment) {
-                    const warehouseStock = await checkFulfillmentStock(sku, token);
-                    if (warehouseStock === 0) {
-                        await sendMessageToMeta(`No hay stock de fulfillment para el SKU: ${sku}`);
-                    }
-                }
-            }
-            */
-        } catch (error) {
-            console.error('Error en el procesamiento de la orden:', error);
-        }
-    });
-};
+app.post('/', (req: Request, res: Response) => {
+    orderController.handle(req, res);
+});
+
+app.listen(port, () => {
+    console.log(`Servidor escuchando en el puerto ${port}`);
+});
+
+// Exportar la función para Google Cloud Functions
+export const orderProcessing = app;
